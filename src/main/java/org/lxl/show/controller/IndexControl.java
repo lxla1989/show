@@ -1,5 +1,11 @@
 package org.lxl.show.controller;
 
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.lxl.show.entity.Country;
+import org.lxl.show.service.CountryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,6 +13,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class IndexControl {
+	@Resource
+	private CountryService countryService;
+
 	@RequestMapping("/")
 	public String index() {
 		/**
@@ -20,5 +29,11 @@ public class IndexControl {
 	@ResponseBody
 	public String hello() {
 		return "Hello World";
+	}
+	
+	@GetMapping("/countrys")
+	@ResponseBody
+	public List<Country> getCountrys() {
+		return countryService.getAll();
 	}
 }
