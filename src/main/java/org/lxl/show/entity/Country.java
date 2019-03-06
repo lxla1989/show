@@ -1,21 +1,21 @@
 package org.lxl.show.entity;
 
 public class Country {
-	private String id;
+	private int id;
 	private String countryname;
 	private String countrycode;
 
-	public Country(String id, String countryname, String countrycode) {
+	public Country(int id, String countryname, String countrycode) {
 		super();
 		this.id = id;
 		this.countryname = countryname;
 		this.countrycode = countrycode;
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getCountryname() {
