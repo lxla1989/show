@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="shortcut icon" href="static/favicon.ico" />
+		<link rel="bookmark" href="static/favicon.ico" />
+		<link rel="stylesheet" href="static/css/bootstrap.min.css">
+		<link rel="stylesheet" href="static/css/font-awesome.min.css">
+		<title>上传文件</title>
+	</head>
+	<body>
+		<div class="container">
+			<div>
+				<a href="#"><i class="fa fa-qq" aria-hidden="true"></i>QQ</a>
+				<!-- <form enctype="multipart/form-data" method="post" action="/file/upload">
+					文件:<input type="file" name="file"/>
+				    <font style="color:red">*</font>文件名:
+				    <input type="text" name="name"/>
+					<input type="submit" value="上传"/>
+				</form> -->
+				<div id="DisplayGalleryImage">
+					<div id="galleryImage-container">
+						<div class="img-up-add img-item addGallery"></div>
+						<form id="filesForm" enctype="multipart/form-data">
+							<input type="file" name="file" id="galleryImage" multiple="multiple" />
+							<input class="fileupload" type="submit" value="上传"/>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="static/js/jquery-3.3.1.min.js" ></script>
+	<script src="static/js/bootstrap.min.js" ></script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$(".addGallery").click(function() {
+			    $("#galleryImage").click();
+			});
+			$("#galleryImage").change(function() {
+				var index = 0;
+			    for (var i = 0; i < this.files.length; i++) {
+			        var imgpath = getObjectURL(this.files[i]);
+			        if(!imgpath) continue;
+			        $("#galleryImage-container").prepend(
+			        		"<div class='img-thumb img-item galleryImage' data-index='" + index + 
+			        		"'><img class='thumb-icon' height='200' width='200' src='" + imgpath + "' data-index='" + index + 
+			        		"'><div class='img-remove removeGalleryImg' data-xindex='" + (index++) + 
+			        		"' >delete</div></div>");
+			    }
+			});
+			$("body").on("click", ".removeGalleryImg", function() {
+			    var num = $(this).attr("data-xindex");
+			    $("div[data-index=" + num + "]").remove();
+			    // 此外清空input框内容
+			    if($(".removeGalleryImg").length == 0) {
+			    	$("#galleryImage")[0].value = "";
+			    }
+			});
+			$(".fileupload").on("click", function() {
+				var datafiles = $("#filesForm")[0];
+				var formData = new FormData($("#filesForm")[0]);
+				$.ajax({
+					type: "POST",
+					data: formData,
+					url: "file/upload",
+					contentType: false,
+					processData: false,
+				});
+			});
+		});
+		
+		function getObjectURL(file) {
+		    var url = null ; 
+		    if (window.createObjectURL!=undefined) { // basic
+		        url = window.createObjectURL(file) ;
+		    } else if (window.URL!=undefined) { // mozilla(firefox)
+		        url = window.URL.createObjectURL(file) ;
+		    } else if (window.webkitURL!=undefined) { // webkit or chrome
+		        url = window.webkitURL.createObjectURL(file) ;
+		    }
+		    return url ;
+		};
+	</script>
+</html>
